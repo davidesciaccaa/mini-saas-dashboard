@@ -1,15 +1,32 @@
 /**
  * app/api/projects/[id]/route.ts
  *
- * Handlers: PUT /api/projects/:id  |  DELETE /api/projects/:id
+ * Handlers: GET /api/projects/:id  |  PUT /api/projects/:id  |  DELETE /api/projects/:id
  *
  * Uses the RouteContext<> global helper (Next.js 16+) so params are
  * fully type-safe. params must be awaited (breaking change in v16).
  */
 
 import { NextRequest } from 'next/server';
-import { updateProject, deleteProject } from '@/services/projectService';
+import { getProjectById, updateProject, deleteProject } from '@/services/projectService';
 import type { UpdateProjectInput } from '@/types/project';
+
+export async function GET(
+  _req: NextRequest,
+  ctx: RouteContext<'/api/projects/[id]'>
+) {
+  try {
+    const { id } = await ctx.params;
+    const project = await getProjectById(id);
+    if (!project) {
+      return Response.json({ error: 'Project not found' }, { status: 404 });
+    }
+    return Response.json(project);
+  } catch (err) {
+    console.error('[GET /api/projects/:id]', err);
+    return Response.json({ error: 'Failed to fetch project' }, { status: 500 });
+  }
+}
 
 export async function PUT(
   req: NextRequest,
