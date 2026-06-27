@@ -42,12 +42,6 @@ export default async function DashboardPage() {
         </p>
       </header>
 
-      {/* ── Toolbar placeholder (search / filter / create — coming in Step 2) */}
-      <div className="mb-6 flex items-center justify-between gap-4">
-        <div className="h-9 w-64 animate-pulse rounded-lg bg-white/5" />
-        <div className="h-9 w-32 animate-pulse rounded-lg bg-white/5" />
-      </div>
-
       {/* ── Table ────────────────────────────────────────────────────────── */}
       <ProjectsTable projects={projects} />
     </main>
